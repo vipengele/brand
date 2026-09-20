@@ -1,0 +1,8 @@
+node_modules/
+.turbo/
+
+# @vipengele/brand's published set is built, never committed: build-svg.js
+# outlines assets/src into dist/svg and build-png.js rasterizes that into
+# dist/png. Output that is always regenerated cannot go stale against its
+# sources, which is why there is no "up to date" check anywhere in CI.
+dist/

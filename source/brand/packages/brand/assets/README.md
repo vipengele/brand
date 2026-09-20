@@ -1,14 +1,14 @@
-# tandiko — Brand Assets
+# vipengele — brand assets
 
-The full, visual brand guide lives in **`../guide.html`**; the engineer quick reference (lockups, clear space, colour, type) is **`../README.md`**.
+The guidance (lockups, palette, clear space, minimum sizes) is [`../README.md`](../README.md).
 
 ```
 assets/
-  src/      editable sources — wordmark and tagline as live <text> in Poppins
-  dist/     outlined, font-free — ship these (and rasterize from these)
-  fonts/    the Poppins TTFs the outliner uses (auto-downloaded if missing)
-  guide/    illustrations used only by guide.html (e.g. the mark's construction)
-  tools/    build-svg.js (src → dist) and build-png.js (dist → PNG)
+  src/      the artwork — lockups carry the name as live <text> in Poppins Bold;
+            the icon files are pure geometry and have no text at all
+  fonts/    Poppins Bold + its OFL.txt, read by the outliner, never published
+  tools/    build-svg.js (src → dist/svg) and build-png.js (dist/svg → dist/png)
 ```
 
-Every file shares one coordinate space, so the mark sits identically across all of them. See [`tools/README.md`](tools/README.md) for how the outlined set is built.
+Every file shares one coordinate space, so the mark sits identically across all of them.
+See [`tools/README.md`](tools/README.md) for how the published set is built.

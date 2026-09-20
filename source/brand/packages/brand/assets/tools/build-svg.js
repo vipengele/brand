@@ -4,15 +4,20 @@
 /**
  * build-svg.js
  *
- * Reads every SVG in brand/assets/src/, replaces <text> elements with
- * outlined <path> elements (font-independent), and writes the results to
- * brand/assets/dist/ — preserving all other markup exactly as-is.
+ * Reads every SVG in assets/src/, replaces <text> elements with outlined
+ * <path> elements (font-independent), and writes the results to dist/svg/ —
+ * preserving all other markup exactly as-is.
  *
- * Usage (from brand/assets/tools/):
- *   pnpm install          # one-time, from the repo root
- *   node build-svg.js
+ * The wordmark is live <text> in the sources so the name stays editable and
+ * the artwork stays a single source of truth; outlining is what makes the
+ * published vectors render without Poppins installed.
+ *
+ * Usage:
+ *   pnpm install
+ *   node assets/tools/build-svg.js
  *
  * Missing font TTFs are auto-downloaded into assets/fonts/ on first run.
+ * They are committed, so this is normally offline.
  */
 
 import fs from "node:fs";
@@ -40,18 +45,17 @@ try {
 }
 
 const SRC_DIR = path.resolve(__dirname, "..", "src");
-const DIST_DIR = path.resolve(__dirname, "..", "dist");
+const DIST_DIR = path.resolve(__dirname, "..", "..", "dist", "svg");
 const FONT_DIR = path.resolve(__dirname, "..", "fonts");
 
-// Maps "family-fragment|weight" → downloadable TTF spec.
+// Maps "family-fragment|weight" → downloadable TTF spec. The wordmark is the
+// only text in the artwork and it is set in Bold, so Bold is the only face
+// registered — a weight an SVG asks for and this map lacks is an error rather
+// than a silent substitution.
 const FONT_SPECS = {
-  "poppins|600": {
-    file: "Poppins_600SemiBold.ttf",
-    url: "https://cdn.jsdelivr.net/npm/@expo-google-fonts/poppins/Poppins_600SemiBold.ttf",
-  },
-  "poppins|400": {
-    file: "Poppins_400Regular.ttf",
-    url: "https://cdn.jsdelivr.net/npm/@expo-google-fonts/poppins/Poppins_400Regular.ttf",
+  "poppins|700": {
+    file: "Poppins_700Bold.ttf",
+    url: "https://cdn.jsdelivr.net/npm/@expo-google-fonts/poppins/Poppins_700Bold.ttf",
   },
 };
 
@@ -272,7 +276,7 @@ const files = fs
   .sort();
 fs.mkdirSync(DIST_DIR, { recursive: true });
 
-console.log("\ntandiko · outlining text → vector paths\n");
+console.log("\nvipengele · outlining text → vector paths\n");
 
 try {
   for (const file of files) {
@@ -280,7 +284,7 @@ try {
     fs.writeFileSync(path.join(DIST_DIR, file), result, "utf8");
     console.log(`  ✓ ${file}`);
   }
-  console.log(`\nDone. ${files.length} file(s) written to dist/\n`);
+  console.log(`\nDone. ${files.length} file(s) written to dist/svg/\n`);
 } catch (e) {
   console.error(`\n  ERROR: ${e?.message || e}\n`);
   process.exit(1);

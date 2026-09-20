@@ -1,0 +1,31 @@
+# Repository governance for gt. This file is the source of truth; run
+# 'gt repo sync' to render it, and 'gt repo check' to verify.
+#
+# Shared policy (Dependabot cooldown, commit-message prefixes, the weekly sync
+# schedule) lives in gt's templates, not here, so it stays consistent across
+# every governed repo.
+#
+# Only deliberate overrides are written here. Everything absent follows gt's
+# default and keeps following it as that default changes.
+
+gt_version: 1.7.0
+dependabot:
+  - ecosystem: github-actions
+    directory: /
+  - ecosystem: npm
+    directory: /source/brand
+    note: |
+      source/brand is a pnpm workspace (packages/*) with a SINGLE
+      pnpm-lock.yaml at its root, so this must stay one entry at the workspace
+      ROOT. A per-package entry would edit only that manifest, leave the
+      lockfile stale, and fail every `pnpm install --frozen-lockfile`.
+pipeline:
+  ci:
+    stages:
+      # No preflight stage: this repository holds one project, so there is
+      # nothing for change detection to decide. No test stage: the package is
+      # artwork and two build scripts, and the build IS the check — a source
+      # SVG the outliner cannot resolve a font for fails it.
+      - build
+  cd:
+    enabled: false

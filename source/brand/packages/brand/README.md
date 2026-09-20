@@ -1,107 +1,122 @@
-# @tandiko/brand
+# @vipengele/brand
 
-**Build. Host. Scale. Together.**
+The vipengele brand kit: the logo, mark and wordmark as vectors, plus the raster set the
+contexts that cannot take a vector need. This file is both the engineer's reference and the
+brand guidance — there is no second document to keep in agreement with it.
 
-The full, visual brand guide lives in **`./guide.html`** (open in a browser; print to PDF via ⌘/Ctrl-P — eight letter pages). This file is a quick reference for engineers dropping the brand into product, sites, and docs.
+The package ships **artwork only** and has **no runtime dependencies**.
 
-## Using from code
+## Using it
 
-Import the **outlined, self-contained** vectors (font-independent — these are the ones to ship):
+```sh
+pnpm add @vipengele/brand
+```
 
 ```ts
-import logo from "@tandiko/brand/svg/tandiko-logo-notagline.svg";
-import mark from "@tandiko/brand/svg/tandiko-mark.svg";
+import logo from "@vipengele/brand/svg/vipengele-logo-horizontal.svg";
+import icon from "@vipengele/brand/svg/vipengele-icon.svg";
+import appleTouch from "@vipengele/brand/png/apple-touch-icon-180.png";
 ```
 
-`./svg/*` resolves to `assets/dist/*` (outlined). The editable text sources are at `./svg-src/*` (`assets/src/*`) and the brand TTFs at `./fonts/*`.
+`./svg/*` and `./png/*` resolve into the built `dist/`. Nothing is re-exported through a barrel,
+so a consumer only ever pulls the file it names.
 
-Rasterize any vector on demand via the bundled bin (uses `@resvg/resvg-js`):
+## Lockups
 
-```sh
-pnpm exec tandiko-brand-png node_modules/@tandiko/brand/assets/dist/tandiko-mark.svg 192
-```
+| File | Use |
+| --- | --- |
+| `vipengele-logo.svg` | Stacked lockup, light surfaces |
+| `vipengele-logo-dark.svg` | Stacked lockup, dark surfaces |
+| `vipengele-logo-mono.svg` | Stacked lockup, single colour (`currentColor`) |
+| `vipengele-logo-horizontal.svg` | Horizontal lockup — nav bars, README headers |
+| `vipengele-logo-horizontal-dark.svg` | Horizontal, dark surfaces |
+| `vipengele-logo-horizontal-mono.svg` | Horizontal, single colour |
+| `vipengele-wordmark.svg` / `-dark.svg` | Wordmark alone |
 
-Regenerate the outlined `dist/` from the text sources (maintainers, after editing `assets/src/`):
+## Icon
 
-```sh
-pnpm --filter @tandiko/brand build   # outlines <text> → <path> using the brand fonts
-```
+| File | Use |
+| --- | --- |
+| `vipengele-icon.svg` | 512 box, 48 padding — the default icon |
+| `vipengele-icon-dark.svg` | Same, dark-surface palette |
+| `vipengele-icon-mono.svg` | `currentColor`, for buttons and inline UI |
+| `vipengele-icon-tight.svg` / `-dark.svg` | Less padding — favicons and anything under 32px |
+| `vipengele-icon-light-plate.svg` | On a white rounded square — app icons, avatars |
+| `vipengele-icon-dark-plate.svg` | On a `#0B1220` rounded square |
 
----
+## Raster
 
-## Logo
+`icon-{16…1024}.png`, `icon-dark-{256,512,1024}.png`, `favicon-{16,32,48}.png`, `favicon.ico`
+(16/32/48 multi-size), `apple-touch-icon-180.png`, `app-icon-{light,dark}-512.png`, `@2x` lockups,
+and `og-{light,dark}-1200x630.png` for social cards.
 
-A cloud that holds a **T**. The cloud is the platform, drawn as an open outline; the T is folded from a single ribbon and breaks the cloud's edge at the bottom — what you build on tandiko is yours and leaves the platform.
+Favicons and the `.ico` are cut from `vipengele-icon-tight.svg`, because the three faces stop
+separating once the padded icon is scaled below 32px.
 
-| Lockup                   | Use                                                                   | Files                                                    |
-|--------------------------|-----------------------------------------------------------------------|----------------------------------------------------------|
-| **Primary**              | Covers, first pages, signage — where the brand is being introduced    | `tandiko-logo.svg`, `tandiko-logo-onDark.svg`            |
-| **Compact** (no tagline) | **The product default** — web, headers, sign-in, anything small       | `tandiko-logo-notagline.svg`, `…-notagline-onDark.svg`   |
-| **Mark**                 | App icons, avatars, favicons, loading states — name already present   | `tandiko-mark.svg`                                       |
-| **Wordmark**             | Where the mark is already present                                     | `tandiko-wordmark.svg`                                   |
-| **Mono**                 | One-colour cuts of every lockup and the mark                          | `…-mono-ink.svg`, `…-mono-white.svg`                     |
+## Palette
 
-**On dark:** wordmark white, tagline `#9AA3B2`, mark unchanged — for grounds darker than `#2A3145`. **Mono ink** for engraving, embroidery, single-plate print; **mono white** for photography and solid colour fields.
+The mark is an isometric block: a top face catching the light, a front-left face, and a
+front-right face in shadow. Every colour below keeps that ordering.
 
-**Clear space:** `2X` on every side, where `X` is the cloud's ring weight (62 units on the master grid). It scales with the logo.
+| Role | Light surfaces | Dark surfaces |
+| --- | --- | --- |
+| top face, light end | `#5ABDFE` | `#86D1FF` |
+| top face, dark end | `#4FA9FD` | `#6ABEFB` |
+| left face, light end | `#2175FF` | `#4A8CFF` |
+| left face, dark end | `#0F54F5` | `#2E6BFF` |
+| right face, light end | `#353BC2` | `#4952D8` |
+| right face, dark end | `#1F2E8B` | `#2F369E` |
+| wordmark ink | `#0B182E` | `#EEF3FA` |
 
-**Minimum size**
+The dark variants lift each face just far enough to clear a `#0B1220` background while keeping the
+shadow face darkest — the depth read survives the inversion. Legible on `#000000`, `#0B1220`,
+`#161B22` and `#1E2433`.
 
-- Primary lockup — **260px / 70mm** (below this the tagline drops under 5pt; use compact)
-- Compact lockup — **120px / 32mm**
-- Mark — **24px / 8mm**; at **16px and below** use the mono mark
-
-**Never:** stretch, rotate, recolour the gradient, add shadow or glow, place on a low-contrast ground, box/badge/outline it, fade it, or re-typeset the name. Never use the cloud without the T or the T without the cloud. Never set the wordmark yourself — the files carry −1.2 tracking and a fixed relationship to the mark that typing will not reproduce.
-
----
-
-## Color
-
-Blue carries the brand; the neutrals carry the work.
-
-```
-Core blues
-Deep       #0031AC   gradient start; headlines on light, dark UI fills
-Action     #0A6FE0   the interface blue — links, primary buttons, focus (4.8:1 on white)
-Azure      #1A9DF7   gradient mid; fills and charts only — never text on white
-Sky        #44EBFE   gradient end; accents on dark, highlights (decorative)
-
-Neutrals
-Ink        #141A2C   body text on light
-Graphite   #2A3145
-Slate      #545B69   secondary text
-Steel      #8A90A0   labels, 16px and above only
-Line       #C9CED8
-Mist       #E3E6EB
-Fog        #F4F5F7   default page ground
-
-Gradients — logo only
-cloud      #0031AC → #1A9DF7 65% → #44EBFE · −10°
-T          #0052D9 → #28BCFF · −15°
-```
-
-The two gradients belong to the mark — never page or panel backgrounds. Every module in an app inherits this palette; modules do not introduce brand colours of their own.
-
----
+These are the *artwork's* colours. They are not the design system's palette: a product UI takes its
+colours from `@vipengele/react-tokens`, whose accent is a seed the theme ramps off, not a brand
+constant.
 
 ## Typography
 
-| Role               | Family            | Weights                    | Use                                                         |
-|--------------------|-------------------|----------------------------|-------------------------------------------------------------|
-| Display / wordmark | **Poppins**       | 400 · 500 · 600            | Headlines, decks, campaign pages — nothing below 20px       |
-| Text / UI          | **IBM Plex Sans** | 400 · 500 · 600            | Product UI, documentation, long copy, tables, forms         |
-| Mono / technical   | **IBM Plex Mono** | 400 · 500                  | Code, endpoints, module and permission identifiers          |
+The wordmark is **Poppins Bold**, cap height 128 units, tracking `-0.02em`, and reads
+**Vipengele**. Every published vector carries it as outlines, so nothing depends on the font being
+installed. For UI text set alongside the logo, Poppins at 600 pairs cleanly —
+[from Google Fonts](https://fonts.google.com/specimen/Poppins), not from this package.
 
-All free & open-source on Google Fonts:
+## Clear space and minimum size
 
-```html
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+- Clear space: one quarter of the mark's height on all sides.
+- Minimum icon size: **24px**. Below that use `vipengele-icon-tight.svg`; below 16px the three
+  faces stop separating.
+- Don't recolour individual faces, rotate the mark, or set the wordmark in another weight — use
+  `-mono` when you need a single colour.
+
+## Construction
+
+- Corners use a constant **tangent inset** (38 units at artwork scale) rather than a constant
+  radius. Acute corners therefore get tight arcs and obtuse corners generous ones, which keeps the
+  straight run of every edge visually consistent.
+- Face geometry: the left panel is a trapezoid (top edge 30.6°, bottom 33.9°); the right panel is a
+  true parallelogram at 30.6°; the top face is a rhombus at ~33°.
+- Gradients are linear and `userSpaceOnUse`.
+
+## Building
+
+`assets/src/` is the only artwork source. The lockups carry the name as live `<text>`, so it stays
+editable and the file stays the single source of truth; the icon files have no text and pass
+through untouched.
+
+```sh
+pnpm build     # assets/src → dist/svg (outlined) → dist/png (rasterized)
 ```
 
-The wordmark is **Poppins SemiBold, letter-spacing −1.2** (on the 250-unit master), always lowercase. The name is **tandiko** in the logo and in running text — never `Tandiko` in a logo position, never `TANDIKO` anywhere.
+Generated output is never committed — `dist/` is what the build produces and what the package
+publishes, so it cannot go stale against its sources.
 
----
+## Licence
 
-**Note: the SVGs in `assets/src/` use live `<text>` in Poppins and only render correctly where it is installed. Use the files from `assets/dist/` — outlined, self-contained, and intended for production.**
+MIT (`LICENSE`).
 
-_tandiko Brand Guidelines · v1.0 · September 2026_
+The wordmark is set in [Poppins](https://fonts.google.com/specimen/Poppins), licensed under
+OFL-1.1. The TTF lives in `assets/fonts/` with its `OFL.txt` as a build input; the published
+package contains no font software, only outlined geometry.

@@ -1,0 +1,10 @@
+# The components lydite scans.
+#
+# brand carries no test script — it outlines SVGs and rasterizes them, and the
+# build is what proves that worked — so it is declared build-only and mutation
+# testing is off.
+components:
+  - name: brand
+    dir: source/brand/packages/brand
+    command: ["pnpm", "run", "build"]
+    mutation: false
