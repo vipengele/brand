@@ -5,8 +5,15 @@
 # schedule) lives in gt's templates, not here, so it stays consistent across
 # every governed repo.
 #
+# The pipeline stages below become jobs in ci-orchestration.yml, each calling a
+# ci-*/cd-* workflow that belongs to this repository: gt creates those once and
+# never touches them again. Branch protection needs exactly one check, ci-gate,
+# which waits on all of them.
+#
 # Only deliberate overrides are written here. Everything absent follows gt's
-# default and keeps following it as that default changes.
+# default and keeps following it as that default changes — a value pinned in
+# this file stops tracking gt, which is why sync removes the ones that merely
+# restate it. Run 'gt repo config' to see the resolved spec, defaults included.
 
 gt_version: 1.7.0
 dependabot:
@@ -22,10 +29,6 @@ dependabot:
 pipeline:
   ci:
     stages:
-      # No preflight stage: this repository holds one project, so there is
-      # nothing for change detection to decide. No test stage: the package is
-      # artwork and two build scripts, and the build IS the check — a source
-      # SVG the outliner cannot resolve a font for fails it.
       - build
   cd:
     enabled: false
